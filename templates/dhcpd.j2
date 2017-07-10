@@ -20,9 +20,9 @@ subnet {{ pod.net }} netmask {{ pod.mask }} {
 {% for switch in switches %}
   {% for host, data in switch.items() %}
     
-host {{ host }} {
-    option dhcp-client-identifier "{{ data.id }}";
-    fixed-address {{ data.ip }};
+host {{ hostname }} {
+    option dhcp-client-identifier "{{ data.get('id') }}";
+    fixed-address {{ data.get('ip') }};
     option bootfile-name "/var/lib/tftpboot/poap_nexus_script.py";
 }
 
