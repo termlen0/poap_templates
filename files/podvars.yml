@@ -1,0 +1,33 @@
+---
+
+pod:
+  net: 172.16.30.0
+  mask: 255.255.255.0
+  start_ip: 172.16.30.101
+  end_ip: 172.16.30.104
+  tftp_server: 10.10.20.20
+
+switches:
+  - nxv1:
+      id: MAC1
+      ip: 172.16.30.101
+      hostname: nx-osv9000-1
+      password: admin
+      conf_var1: 100.1.1.1/24
+      conf_var2: 200.1.1.1/24
+
+  - nxv3:
+      id: MAC3
+      ip: 172.16.30.103
+      hostname: nx-osv9000-3
+      password: admin
+      conf_var1: 100.3.1.1/24
+      conf_var2: 200.3.1.1/24
+
+  - nxv4:
+      id: MAC4
+      ip: 172.16.30.104
+      hostname: nx-osv9000-4
+      password: admin
+      conf_var1: 100.4.1.1/24
+      conf_var2: 200.4.1.1/24
