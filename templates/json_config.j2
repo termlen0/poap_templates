@@ -2,7 +2,7 @@
 {% for switch in switches %}
   {% for host, data in switch.items() %}
 
-    "data.id": [
+    {{ data.id }}: [
     {
         "config": "vdc switch id 1\n  limit-resource vlan minimum 16
   maximum 4094\n  limit-resource vrf minimum 2 maximum 4096\n
