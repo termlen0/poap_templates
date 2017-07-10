@@ -1,0 +1,31 @@
+ddns-update-style none;
+
+option domain-name "ciscodevnet.com";
+
+default-lease-time 3600;
+max-lease-time 7200;
+
+log-facility local7;
+
+option tftp-server-address code 150 = ip-address;
+
+subnet {{ pod.net }} netmask {{ pod.mask }} {
+    range {{ pod.start_ip }} {{ pod.end_ip }};
+    option routers {{ pod.router }};
+    option bootfile-name "poap_nexus_script.py";
+    option tftp-server-address {{ pod.tftp_server }} ;
+}
+
+
+{% for switch in switches %}
+  {% for host, data in switch.items() %}
+    
+host {{ host }} {
+    option dhcp-client-identifier "{{ data.id }}";
+    fixed-address {{ data.ip }};
+    option bootfile-name "/var/lib/tftpboot/poap_nexus_script.py";
+}
+
+{% endfor %}
+{% endfor %}
+
