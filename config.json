@@ -1,0 +1,14 @@
+{
+  "080027F494FB": [
+    {
+        "config": "vdc switch id 1\n  limit-resource vlan minimum 16 maximum 4094\n  limit-resource vrf minimum 2 maximum 4096\n  limit-resource port-channel minimum 0 maximum 511\n  limit-resource u4route-mem minimum 248 maximum 248\n  limit-resource u6route-mem minimum 96 maximum 96\n  limit-resource m4route-mem minimum 58 maximum 58\n  limit-resource m6route-mem minimum 8 maximum 8\nfeature bash-shell\nfeature ssh\n\nhostname nxosv\n\nno password strength-check\nusername admin password 5 $5$bFlOCeX2$Bgnf4kzZPWPkekMalE84W1uKRlG705WCn141FZLOCWC  role network-admin\nusername vagrant password vagrant role network-admin\nusername vagrant shell bash\nip domain-lookup\nsnmp-server user admin network-admin auth md5 0xbb785c32a1b11f4d7f4c406ce877163a priv 0xbb785c32a1b11f4d7f4c406ce877163a localizedkey\nrmon event 1 log trap public description FATAL(1) owner PMON@FATAL\nrmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL\nrmon event 3 log trap public description ERROR(3) owner PMON@ERROR\nrmon event 4 log trap public description WARNING(4) owner PMON@WARNING\nrmon event 5 log trap public description INFORMATION(5) owner PMON@INFO\n\nusername vagrant sshkey ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key\n\nvlan 1\n\nvrf context management\n\ninterface Ethernet1/1\n  no switchport\n  ip address 20.20.20.1/24\n  no shutdown\n\ninterface Ethernet1/2\n  no switchport\n  ip address 100.1.1.1/24\n  no shutdown\n\ninterface mgmt0\n  vrf member management\n  ip address dhcp\nline console\nline vty\n",
+        "md5sum": "somedata"
+    }
+  ],
+    "NEXT_DEVICE_ID": [
+        {
+            "config": "Sample config",
+            "md5sum": "sample md5sum"
+        }
+    ]
+}
