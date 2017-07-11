@@ -7,6 +7,8 @@ pod:
   end_ip: 172.16.30.104
   tftp_server: 10.10.20.20
   router: 172.16.30.102
+  protocol: tftp
+  port: 69
 
 switches:
   - hostname: nx-osv9000-1

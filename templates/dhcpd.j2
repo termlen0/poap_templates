@@ -14,7 +14,6 @@ subnet 10.10.20.0 netmask 255.255.255.0 {}
 subnet {{ pod.net }} netmask {{ pod.mask }} {
     range {{ pod.start_ip }} {{ pod.end_ip }};
     option routers {{ pod.router }};
-    option bootfile-name "poap_nexus_script.py";
     option tftp-server-address {{ pod.tftp_server }} ;
 }
 
@@ -24,7 +23,7 @@ subnet {{ pod.net }} netmask {{ pod.mask }} {
 host {{ switch.hostname }} {
     option dhcp-client-identifier "{{ switch.details.get('id') }}";
     fixed-address {{ switch.details.get('oob_ip') | ipaddr('address') }};
-    option bootfile-name "/var/lib/tftpboot/poap_nexus_script.py";
+    option bootfile-name "/var/lib/tftpboot/poap_{{ switch.hostname }}.py";
   }
 
 {% endfor %}
