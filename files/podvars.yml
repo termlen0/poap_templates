@@ -11,26 +11,19 @@ pod:
 switches:
   - hostname: nx-osv9000-1
     details:
-      id: MAC1
-      ip: 172.16.30.101
-      password: admin
-      conf_var1: 100.1.1.1/24
-      conf_var2: 200.1.1.1/24
+      id: aa:aa:aa:aa:aa:aa
+      oob_ip: 172.16.30.101/24
+      lo0_ip: 192.168.0.1/24
 
   - hostname: nx-osv9000-3
     details:
-      id: MAC3
-      ip: 172.16.30.103
-      password: admin
-      conf_var1: 100.3.1.1/24
-      conf_var2: 200.3.1.1/24
+      id: aa:aa:aa:aa:aa:ac
+      oob_ip: 172.16.30.103/24
+      lo0_ip: 192.168.0.3/24
 
   - hostname: nx-osv9000-4
     details:
-      id: MAC4
-      ip: 172.16.30.104
-      password: admin
-      conf_var1: 100.4.1.1/24
-      conf_var2: 200.4.1.1/24
-
+      id: aa:aa:aa:aa:aa:ad
+      oob_ip: 172.16.30.104/24
+      lo0_ip: 192.168.0.4/24
       
