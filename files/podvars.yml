@@ -5,12 +5,18 @@ pod:
   mask: 255.255.255.0
   start_ip: 172.16.30.101
   end_ip: 172.16.30.104
-  tftp_server: 10.10.20.20
-  router: 172.16.30.102
+  tftp_server: 172.16.30.1
+  router: 172.16.30.1
   protocol: tftp
   port: 69
 
 switches:
+  - hostname: nx-test-1
+    details:
+      id: 08:00:27:2e:c4:42
+      oob_ip: 172.16.30.102/24
+      lo0_ip: 192.168.0.2/24
+      
   - hostname: nx-osv9000-1
     details:
       id: aa:aa:aa:aa:aa:aa
