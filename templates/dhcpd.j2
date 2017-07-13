@@ -20,7 +20,7 @@ subnet {{ pod.net }} netmask {{ pod.mask }} {
 {% for switch in switches %}
     
 host {{ switch.hostname }} {
-    hardware ethernet  "{{ switch.details.get('id') }}";
+    hardware ethernet  {{ switch.details.get('id') }};
     fixed-address {{ switch.details.get('oob_ip') | ipaddr('address') }};
     option bootfile-name "/var/lib/tftpboot/poap_{{ switch.hostname }}.py";
   }
