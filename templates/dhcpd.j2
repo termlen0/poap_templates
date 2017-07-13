@@ -12,7 +12,6 @@ option tftp-server-address code 150 = ip-address;
 subnet 10.10.20.0 netmask 255.255.255.0 {}
 
 subnet {{ pod.net }} netmask {{ pod.mask }} {
-    range {{ pod.start_ip }} {{ pod.end_ip }};
     option routers {{ pod.router }};
     option tftp-server-address {{ pod.tftp_server }} ;
 }
@@ -21,7 +20,7 @@ subnet {{ pod.net }} netmask {{ pod.mask }} {
 {% for switch in switches %}
     
 host {{ switch.hostname }} {
-    option dhcp-client-identifier "{{ switch.details.get('id') }}";
+    option hardware ethernet  "{{ switch.details.get('id') }}";
     fixed-address {{ switch.details.get('oob_ip') | ipaddr('address') }};
     option bootfile-name "/var/lib/tftpboot/poap_{{ switch.hostname }}.py";
   }
