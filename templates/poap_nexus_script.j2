@@ -31,6 +31,8 @@ options = {
     "port": "{{ pod.port | safe }}",
     "identifier": "{{ item.details.id | safe }}", # MAC or S.No of device
     "disable_md5": True,
+    "target_system_image": "nxos.7.0.3.I5.1.bin",
+    "target_kickstart_image": ""
 }
 
 
@@ -64,9 +66,9 @@ def tftp_copy():
     except Exception as e:
         # Remove extra junk in the message
         if "no such file" in str(e):
-            abort("Copy of %s failed: no such file" % source)
+            abort("Copy of %s failed: no such file" % file_name)
         elif "Permission denied" in str(e):
-            abort("Copy of %s failed: permission denied" % source)
+            abort("Copy of %s failed: permission denied" % file_name)
         elif "No space left on device" in str(e):
             abort("No space left on device")
         else:
@@ -198,10 +200,9 @@ def sigterm_handler(signum, stack):
     A signal handler for the SIGTERM signal. Cleans up and exits
     """
     abort("INFO: SIGTERM Handler")
-    
-def main(protocol):
-    # Register the SIG TERM handler
-    signal.signal(signal.SIGTERM, sigterm_handler)
+
+def copy_config(protocol):
+    """Copies over the desired start up configuration"""
     if protocol == "tftp":
         tftp_copy()
     elif protocol == "http":
@@ -221,7 +222,63 @@ def main(protocol):
             e_trace = e_trace.tb_next
             abort()
             
+
+def image_install(kickstart="", system=""):
+    """Copies the user requested image if different and install"""
+    # TODO Kickstart image (research criteria for 7.x)    
+    # 1. Check the current install image
+    poap_log("Checking the current image...")
+    try:
+        show_ver = cli("show version")
+        _version = re.search(r'NXOS\simage.+\/(.+bin)', show_ver)
+        current_version = _version.group(1)
+    except Exception:
+        poap_log("Unable to identify current running version")
     
+    # 2. If the current image is different from the target image, download target
+    if current_version == system:
+        poap_log("Target already matches current image. Skipping....")
+        return
+    else:
+        host = options['remote_server']
+        vrf = "Management"
+        poap_log("Transferring file {} over TFTP".format(system))
+        copy_cmd = "terminal dont-ask ; "
+        copy_cmd += "copy tftp://%s/%s bootflash:/%s vrf %s" % (host, system, system , vrf)
+    try:
+        cli(copy_cmd)
+    except Exception as e:
+        # Remove extra junk in the message
+        if "no such file" in str(e):
+            abort("Copy of %s failed: no such file" % system)
+        elif "Permission denied" in str(e):
+            abort("Copy of %s failed: permission denied" % system)
+        elif "No space left on device" in str(e):
+            abort("No space left on device")
+        else:
+            raise
+    # TODO: MD5 sum validation 
+    poap_log("Copy over TFTP, complete")
+
+    # 3. Set the boot variable
+    try:
+        poap_log("config terminal ; boot nxos %s" % system)
+        cli("config terminal ; boot nxos bootflash:///%s" % system)
+        cli("copy running-config startup-config")
+    except Exception as e:
+        poap_log("Failed to set NXOS boot variable to %s" % system)
+        abort(str(e))
+
+
+
+def main():
+    # Register the SIG TERM handler
+    signal.signal(signal.SIGTERM, sigterm_handler)
+    # Download and Install the user requested image
+    image_install(kickstart=options['target_kickstart_image'],
+                  system=options['target_system_image'])
+    # Download the POAP target configuration to NVRAM and reboot
+    copy_config(options['protocol'])
 
         
 if __name__ == "__main__":

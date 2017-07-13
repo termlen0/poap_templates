@@ -199,7 +199,7 @@ def sigterm_handler(signum, stack):
     """
     abort("INFO: SIGTERM Handler")
     
-def main(protocol):
+def copy_config(protocol):
     # Register the SIG TERM handler
     signal.signal(signal.SIGTERM, sigterm_handler)
     if protocol == "tftp":
@@ -207,7 +207,7 @@ def main(protocol):
     elif protocol == "http":
         http_copy()
     cmd = "terminal dont-ask ;"
-    cmd += "copy bootflash:/conf_{}.cfg scheduled-config ; reload".format(options['identifier'])
+    cmd += "copy bootflash:/conf_{}.cfg scheduled-config".format(options['identifier'])
     poap_log("INFO: Ready to execute {}".format(cmd))
     try:
         cli(cmd)
@@ -220,6 +220,18 @@ def main(protocol):
                      .format(fname, e_trace.tb_lineno))
             e_trace = e_trace.tb_next
             abort()
+
+def image_install():
+    pass
+
+def main():
+    # Download and Install the user requested image
+    image_install()
+    copy_config(options['protocol'])
+    
+    
+
+            
             
     
 
@@ -228,7 +240,7 @@ if __name__ == "__main__":
     #Start logging 
     setup_logging()
     try:
-        main(options['protocol'])
+        main()
     except Exception:
         e_type, e_val, e_trace = sys.exc_info()
         poap_log("Exception: {0} {1}".format(e_type, e_val))
