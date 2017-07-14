@@ -83,7 +83,7 @@ def http_copy():
     port = options['port']
     host = options['remote_server']
     id = options['identifier']
-    poap_log("Transfering config file {} over HTTP".format(file_name))
+    poap_log("Transfering config file over HTTP...")
     try: 
         response = urllib2.urlopen('http://{}:{}/{}'.format(host, port, id)).read()
     except Exception:
@@ -208,8 +208,8 @@ def copy_config(protocol):
     elif protocol == "http":
         http_copy()
     cmd = "terminal dont-ask ;"
-    cmd += "copy bootflash:/{{ item.hostname |safe }}.cfg scheduled-config ; reload".format(options['identifier'])
-    poap_log("INFO: Ready to execute {}".format(cmd))
+    cmd += "copy bootflash:/{{ item.hostname |safe }}.cfg scheduled-config "
+    log("INFO: Ready to execute {}".format(cmd))
     try:
         cli(cmd)
     except Exception:

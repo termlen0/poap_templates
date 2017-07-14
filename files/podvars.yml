@@ -3,8 +3,6 @@
 pod:
   net: 172.16.30.0
   mask: 255.255.255.0
-  start_ip: 172.16.30.101
-  end_ip: 172.16.30.104
   tftp_server: 172.16.30.1
   router: 172.16.30.1
   protocol: tftp
